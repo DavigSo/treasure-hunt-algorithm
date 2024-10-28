@@ -58,10 +58,3 @@ Contribuições são bem-vindas! Se você quiser melhorar o jogo ou adicionar no
 4. Faça o push para a branch (`git push origin feature/nova-funcionalidade`).
 5. Abra um Pull Request.
 
-### Licença
-
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-Sinta-se à vontade para personalizar o README conforme suas necessidades! Se precisar de mais informações ou quiser adicionar mais seções, basta avisar.
