@@ -1,3 +1,8 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package main.strategies;
 
 import java.util.List;
@@ -6,10 +11,11 @@ import main.game.map.Map;
 import main.game.map.Point;
 
 public class Sort implements Strategy {
+    public Sort() {
+    }
 
-	@Override
-	public Point evaluatePossbileNextStep(List<Point> possibleNextSteps, Map map) {
-		Random random = new Random();
-		return possibleNextSteps.get(random.nextInt(possibleNextSteps.size()));
-	}
+    public Point evaluatePossibleNextStep(List<Point> possibleNextSteps, Map map) {
+        Random random = new Random();
+        return (Point)possibleNextSteps.get(random.nextInt(possibleNextSteps.size()));
+    }
 }

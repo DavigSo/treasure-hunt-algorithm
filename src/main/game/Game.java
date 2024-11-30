@@ -1,42 +1,63 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package main.game;
 
 import main.game.map.Map;
 import main.game.map.Point;
-import main.game.map.TreasureChest;
-import main.strategies.FewerObstacles;
-import main.strategies.FewerObstaclesAndShorterDistance;
-import main.strategies.ShortestDistance;
-import main.strategies.Sort;
-
+import main.game.map.Rock;
+import main.strategies.Voting;
 
 public class Game {
-	private Map map;
-	private Player player;
-	public Game() {
-		this.map = new Map(8, 8);
-		this.player = new Player(new ShortestDistance());
-	}
-	
-	public void run() {
-		this.map.print();
-		System.out.println();
-		while(true) {
-			Point nextPoint = this.player.evaluatePossbileNextStep(map);
-			if (nextPoint == null) {
-				break;
-			} else {
-				String space = this.map.get(nextPoint);
-				if (space != null && space.equals(TreasureChest.CHARACTER)) {
-					this.map.openTreasureChest(nextPoint);
-					this.map.print();
-					break;
-				} else {
-					this.map.moveRobot(nextPoint);					
-				}
-			}
-			this.map.print();
-			System.out.println();
-		}
-	}
+    private Map map = new Map(8, 8);
+    private Player player = new Player(new Voting());
 
+    public Game() {
+    }
+
+    public void run() {
+        this.map.print();
+        System.out.println();
+        int moveCount = 0;
+
+        while(moveCount < 100) {
+            Point nextPoint = this.player.evaluatePossibleNextStep(this.map);
+            if (nextPoint == null) {
+                System.out.println("Não há mais movimentos possíveis. O jogo terminou.");
+                break;
+            }
+
+            String space = this.map.get(nextPoint);
+            if (space != null) {
+                if (space.equals("T")) {
+                    System.out.println("\nVocê morreu, caiu em uma armadilha.");
+                    break;
+                }
+
+                if (space.equals("T")) {
+                    this.map.openTreasureChest(nextPoint);
+                    this.map.print();
+                    System.out.println("\nTesouro encontrado! O jogo terminou.");
+                    break;
+                }
+
+                if (space.equals(Rock.CHARACTER)) {
+                    System.out.println("\nVocê encontrou uma pedra e mudou de rota. Tente outra direção.");
+                    continue;
+                }
+            }
+
+            this.map.moveRobot(nextPoint);
+            this.map.print();
+            System.out.println("\nMovimento número: " + (moveCount + 1));
+            ++moveCount;
+        }
+
+        if (moveCount >= 100) {
+            System.out.println("O número máximo de movimentos foi atingido. O jogo terminou.");
+        }
+
+    }
 }
