@@ -49,24 +49,30 @@ public class Voting implements Strategy {
 
     private int countObstaclesAround(Point point, Map map) {
         int obstacles = 0;
-        int[][] directions = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
-        int[][] var5 = directions;
-        int var6 = directions.length;
+        int[][] directions = {
+                {-1, 0}, {1, 0}, // cima e baixo
+                {0, -1}, {0, 1}, // esquerda e direita
+                {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // diagonais
+        };
 
-        for(int var7 = 0; var7 < var6; ++var7) {
-            int[] direction = var5[var7];
+        for (int[] direction : directions) {
             int newX = point.getPositionX() + direction[0];
             int newY = point.getPositionY() + direction[1];
             if (newX >= 0 && newY >= 0 && newX < map.getScenarioSize()[0] && newY < map.getScenarioSize()[1]) {
                 String cell = map.get(new Point(newX, newY));
-                if (this.isObstacle(cell)) {
-                    ++obstacles;
-                }
+                obstacles += getObstacleWeight(cell); // usa um método para calcular o peso
             }
         }
-
         return obstacles;
     }
+
+    private int getObstacleWeight(String cell) {
+        if (cell == null) return 0;
+        if (cell.equals(Monster.CHARACTER)) return 3;
+        if (cell.equals(Rock.CHARACTER)) return 1;
+        return 0;
+    }
+
 
     private boolean isObstacle(String cell) {
         return cell != null && (cell.equals(Rock.CHARACTER) || cell.equals(Monster.CHARACTER));
