@@ -5,13 +5,14 @@
 
 package main.game;
 
-import main.game.map.Map;
+import main.game.map.GameMap;
+
 import main.game.map.Point;
 import main.game.map.Rock;
 import main.strategies.Voting;
 
 public class Game {
-    private Map map = new Map(8, 8);
+    private GameMap map = new GameMap(8, 8);
     private Player player = new Player(new Voting());
 
     public Game() {

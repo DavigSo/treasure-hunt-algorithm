@@ -11,7 +11,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import main.game.map.Map;
+
+import main.game.map.GameMap;
 import main.game.map.Monster;
 import main.game.map.Point;
 import main.game.map.Rock;
@@ -27,7 +28,7 @@ public class Player {
         this.visitedPoints = new HashSet();
     }
 
-    public Point evaluatePossibleNextStep(Map map) {
+    public Point evaluatePossibleNextStep(GameMap map) {
         Point robotLocation = map.getRobotLocation();
         List<Point> possibleNextSteps = new ArrayList();
         possibleNextSteps.add(new Point(robotLocation.getPositionX(), robotLocation.getPositionY() + 1));

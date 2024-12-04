@@ -1,69 +1,79 @@
 package main.strategies;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import main.game.map.Map;
-import main.game.map.Monster;
-import main.game.map.Point;
-import main.game.map.Rock;
-import main.tracker.PathTracker;
+
+import main.game.map.*;
 
 public class FewerObstacles implements Strategy {
 
-    private final PathTracker pathTracker;
-
-    public FewerObstacles() {
-        this.pathTracker = new PathTracker();
-    }
+    /**
+     * N is the next location
+     * p1 p2 p3
+     * p4 N p5
+     * p6 p7 p8
+     */
 
     @Override
-    public Point evaluatePossibleNextStep(List<Point> possibleNextSteps, Map map) {
-        Point bestStep = null;
-        int minObstacles = Integer.MAX_VALUE;
+    public Point evaluatePossibleNextStep(List<Point> possibleNextStep, GameMap gameMap) {
+        Iterator<Point> iterator = possibleNextStep.iterator();
+        String [][] scenario = gameMap.getScenario();
+        int min = Integer.MAX_VALUE;
+        Point pointSelected = null;
 
-        for (Point step : possibleNextSteps) {
-            int obstacles = countObstaclesAround(step, map);
-            if (obstacles < minObstacles) {
-                minObstacles = obstacles;
-                bestStep = step;
+        while (iterator.hasNext()) {
+            Point p = iterator.next();
+
+
+            if (scenario[p.getPositionX()][p.getPositionY()].equals("X") ||
+                    scenario[p.getPositionX()][p.getPositionY()].equals("R") ||
+                    scenario[p.getPositionX()][p.getPositionY()].equals("M")) {
+                continue;
+            }
+
+            int count = evaluatePoint(p, gameMap);
+            if (count < min) {
+                min = count;
+                pointSelected = p;
             }
         }
-
-        if (bestStep != null) {
-            pathTracker.addPathPoint(bestStep);
-            if (minObstacles > 0) {
-                pathTracker.addObstacle(bestStep);
-            }
-        }
-
-        return bestStep;
+        return pointSelected;
     }
 
-    private int countObstaclesAround(Point point, Map map) {
-        int obstacles = 0;
-        int[][] directions = {
-                {-1, 0}, {1, 0},  // cima e baixo
-                {0, -1}, {0, 1},  // esquerda e direita
-                {-1, -1}, {-1, 1}, {1, -1}, {1, 1} // diagonais
-        };
+    private int evaluatePoint(Point p, GameMap gameMap) {
+        List<Point> points = new ArrayList<>();
+        int count = 0;
+        points.add(new Point(p.getPositionX() - 1, p.getPositionY() - 1));
+        points.add(new Point(p.getPositionX() - 1, p.getPositionY()));
+        points.add(new Point(p.getPositionX() - 1, p.getPositionY() + 1));
+        points.add(new Point(p.getPositionX(), p.getPositionY() - 1));
+        points.add(new Point(p.getPositionX(), p.getPositionY() + 1));
+        points.add(new Point(p.getPositionX() + 1, p.getPositionY() - 1));
+        points.add(new Point(p.getPositionX() + 1, p.getPositionY()));
+        points.add(new Point(p.getPositionX() + 1, p.getPositionY() + 1));
 
-        for (int[] direction : directions) {
-            int newX = point.getPositionX() + direction[0];
-            int newY = point.getPositionY() + direction[1];
-            if (newX >= 0 && newY >= 0 && newX < map.getScenarioSize()[0] && newY < map.getScenarioSize()[1]) {
-                String cell = map.get(new Point(newX, newY));
-                if (isObstacle(cell)) {
-                    obstacles++;
+        for (int i = 0; i < points.size(); i++) {
+            String [][] scenario = gameMap.getScenario();
+            Point currentPoint = points.get(i);
+            int[] scenarioSize = gameMap.getScenarioSize();
+
+
+            if (currentPoint.getPositionX() < 0 || currentPoint.getPositionX() >= scenarioSize[0] ||
+                    currentPoint.getPositionY() < 0 || currentPoint.getPositionY() >= scenarioSize[1]) {
+                continue;
+            } else {
+
+                if (	scenario[p.getPositionX()][p.getPositionY()].equals("X") ||
+                        gameMap.get(currentPoint).equals(Rock.CHARACTER) ||
+                        gameMap.get(currentPoint).equals(Monster.CHARACTER)) {
+                    count++;
+                } else if (gameMap.get(currentPoint).equals(TreasureChest.CHARACTER)) {
+
+                    count = 0;
                 }
             }
         }
-        return obstacles;
-    }
-
-    private boolean isObstacle(String cell) {
-        return cell.equals(Rock.CHARACTER) || cell.equals(Monster.CHARACTER);
-    }
-
-    public PathTracker getPathTracker() {
-        return pathTracker;
+        return count;
     }
 }
