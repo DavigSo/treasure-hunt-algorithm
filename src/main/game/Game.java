@@ -10,10 +10,11 @@ import main.game.map.GameMap;
 import main.game.map.Point;
 import main.game.map.Rock;
 import main.strategies.Voting;
+import main.strategies.binaryTree.BinaryTree;
 
 public class Game {
     private GameMap map = new GameMap(8, 8);
-    private Player player = new Player(new Voting());
+    private Player player = new Player(new BinaryTree());
 
     public Game() {
     }
