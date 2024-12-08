@@ -4,9 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import main.game.Player;
 import main.game.map.GameMap;
-import main.game.map.MapOfTreasure;
 import main.game.map.Monster;
 import main.game.map.Point;
 import main.game.map.Rock;
@@ -30,8 +28,6 @@ public class BinaryTree implements Strategy{
 
         buildTreeAndCalculatePath(map, 0, 0);
     }
-
-
 
     public void insert(String value){
         if(this.root.getValue()== null){
@@ -85,59 +81,37 @@ public class BinaryTree implements Strategy{
 
     }
 
-    public void buildTreeAndCalculatePath(GameMap map, int startX, int startY) {
-        boolean[][] visited = new boolean[map.getScenario().length][map.getScenario()[0].length];
-        this.root = buildTree(map.getScenario(), startX, startY, visited);
-        this.DFS(this.root); // Calcula o caminho até o tesouro
+    public void buildTreeAndCalculatePath (GameMap map, int i, int j){
+        this.root = buildTreeAndCalculatePath(map.getScenario(), 0, 0);
+        this.DFS(this.root);
     }
 
-    private NodeTree<String> buildTree(String[][] map, int i, int j, boolean[][] visited) {
-        if (i < 0 || i >= map.length || j < 0 || j >= map[0].length || visited[i][j]) {
-            return null;
-        }
-
-        String cell = map[i][j];
-        if (cell.equals(Rock.CHARACTER) || cell.equals(Monster.CHARACTER)) {
-            return null; // Não é possível passar por aqui
-        }
-
-        visited[i][j] = true; // Marca como visitado
-
-        NodeTree<String> newNode = new NodeTree<>(cell, i, j);
-        newNode.setLeft(buildTree(map, i + 1, j, visited)); // Abaixo
-        newNode.setRight(buildTree(map, i, j + 1, visited)); // À direita
-
-        return newNode;
-    }
-
-
-    private boolean treasureFound = false;
-
-    public void DFS(NodeTree<String> node) {
+    public void DFS (NodeTree<String> node){
+        System.out.println();
         LinkedList<NodeTree<String>> path = new LinkedList<>();
-        preOrder(node, TreasureChest.CHEST_TRESURE_CHARACTER, path);
+        preOrder(node, TreasureChest.CHARACTER, path);
         this.sequenceSelected = path;
     }
 
-    public boolean preOrder(NodeTree<String> node, String target, LinkedList<NodeTree<String>> path) {
-        if (node == null || treasureFound) {
+    public boolean preOrder(NodeTree<String> node, Object value, LinkedList<NodeTree<String>> path){
+        if(node == null){
             return false;
         }
 
         path.add(node);
-        if (node.getValue().equals(target)) {
-            treasureFound = true;
+        if(node.getValue().equals(value)){
+            System.out.println("");
             return true;
         }
 
-        if (preOrder(node.getLeft(), target, path) || preOrder(node.getRight(), target, path)) {
+        if(preOrder(node.getLeft(), value, path) || preOrder(node.getRight(), value, path)){
             return true;
         }
 
         path.removeLast();
+        System.out.println("");
         return false;
     }
-
 
     public NodeTree<String> buildTreeAndCalculatePath (String [][] map, int i,int j){
         if(i<0 || i >= map.length || j<0 || j>= map[0].length){
@@ -153,16 +127,18 @@ public class BinaryTree implements Strategy{
         return null;
     }
 
-    @Override
-    public Point evaluatePossibleNextStep(List<Point> possibleNextSteps, GameMap map) {
-        if (!sequenceSelected.isEmpty()) {
+    public Point evaluatePossibleNextStep(List<Point> possibleNextStep, GameMap gameMap){
+        if(!sequenceSelected.isEmpty()) {
             NodeTree<String> nextPoint = sequenceSelected.remove(0);
-            if (nextPoint != null && !nextPoint.isNILL()) {
-                return new Point(nextPoint.getI(), nextPoint.getJ());
+            if(nextPoint != null){
+                if(!nextPoint.isNILL()){
+                    return new Point(nextPoint.getI(), nextPoint.getJ());
+                }
             }
         }
-        return null; // Sem movimentos possíveis
+        return null;
     }
+
 
 
 

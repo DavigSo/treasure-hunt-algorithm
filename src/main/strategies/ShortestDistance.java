@@ -1,9 +1,9 @@
 
 package main.strategies;
 
-import java.util.List;
-
 import main.game.map.*;
+
+import java.util.List;
 
 public class ShortestDistance implements Strategy {
 

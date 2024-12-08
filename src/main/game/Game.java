@@ -1,65 +1,54 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package main.game;
 
 import main.game.map.GameMap;
-
 import main.game.map.Point;
-import main.game.map.Rock;
+import main.game.map.TreasureChest;
+
+import main.strategies.Sort;
+import main.strategies.ShortestDistance;
+import main.strategies.FewerObstacles;
 import main.strategies.Voting;
 import main.strategies.binaryTree.BinaryTree;
 
 public class Game {
-    private GameMap map = new GameMap(8, 8);
-    private Player player = new Player(new BinaryTree());
-
+    private GameMap gameMap;
+    private Player player;
     public Game() {
+        this.gameMap = new GameMap(8, 8);
+        //this.player = new Player(new BinaryTree(this.gameMap));
+        this.player = new Player(new Sort());
     }
 
     public void run() {
-        this.map.print();
+        int num_moves = 0;
+        int[] chestCounter = {0, 0};
+
+        this.gameMap.print();
         System.out.println();
-        int moveCount = 0;
-
-        while(moveCount < 100) {
-            Point nextPoint = this.player.evaluatePossibleNextStep(this.map);
+        int moveCount = 0 + 1;
+        while(moveCount <= 100) {
+            Point nextPoint = this.player.evaluatePossibleNextStep(gameMap);
             if (nextPoint == null) {
-                System.out.println("Não há mais movimentos possíveis. O jogo terminou.");
                 break;
-            }
+            } else {
+                String space = this.gameMap.get(nextPoint);
 
-            String space = this.map.get(nextPoint);
-            if (space != null) {
-                if (space.equals("T")) {
-                    System.out.println("\nVocê morreu, caiu em uma armadilha.");
+                if (space != null && space.equals(TreasureChest.CHARACTER)) {
+                    this.gameMap.openTreasureChest(nextPoint);
+
+                    this.gameMap.print();
+                    System.out.println();
                     break;
-                }
+                } else {
+                    this.gameMap.moveRobot(nextPoint);
+                    num_moves++;
 
-                if (space.equals("T")) {
-                    this.map.openTreasureChest(nextPoint);
-                    this.map.print();
-                    System.out.println("\nTesouro encontrado! O jogo terminou.");
-                    break;
-                }
-
-                if (space.equals(Rock.CHARACTER)) {
-                    System.out.println("\nVocê encontrou uma pedra e mudou de rota. Tente outra direção.");
-                    continue;
                 }
             }
-
-            this.map.moveRobot(nextPoint);
-            this.map.print();
-            System.out.println("\nMovimento número: " + (moveCount + 1));
-            ++moveCount;
+            System.out.println();
+            this.gameMap.print();
         }
-
-        if (moveCount >= 100) {
-            System.out.println("O número máximo de movimentos foi atingido. O jogo terminou.");
-        }
-
+        System.out.println(num_moves + " movimentos");
     }
+
 }

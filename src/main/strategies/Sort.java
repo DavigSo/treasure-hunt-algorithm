@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import main.game.map.GameMap;
+import main.game.map.Monster;
 import main.game.map.Point;
+import main.game.map.Rock;
 
 public class Sort implements Strategy {
 
@@ -16,10 +18,22 @@ public class Sort implements Strategy {
 
     @Override
     public Point evaluatePossibleNextStep(List<Point> possibleNextSteps, GameMap gameMap) {
-        if (possibleNextSteps.isEmpty()) {
+        if (possibleNextSteps == null || possibleNextSteps.isEmpty()) {
             return null;
         }
-        int index = random.nextInt(possibleNextSteps.size());
-        return possibleNextSteps.get(index);
+
+        Point nextStep = null;
+
+        while (nextStep == null) {
+            int index = random.nextInt(possibleNextSteps.size());
+            nextStep = possibleNextSteps.get(index);
+
+            String space = gameMap.get(nextStep);
+            if (Rock.CHARACTER.equals(space) || Monster.CHARACTER.equals(space)) {
+                nextStep = null;
+            }
+        }
+
+        return nextStep;
     }
 }

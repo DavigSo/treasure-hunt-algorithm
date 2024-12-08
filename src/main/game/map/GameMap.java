@@ -196,10 +196,13 @@ public class GameMap {
             String key = it.next();
             if (treasureChests.get(key).equals(nextPoint)) {
                 if(key.equals(TreasureChest.CHEST_TRESURE_CHARACTER)) {
+                    System.out.println();
                     System.out.println("Parabéns você encontrou o tesouro!");
                 } else if (key.equals(TreasureChest.CHEST_TRAP_CHARACTER)) {
+                    System.out.println();
                     System.out.println("O jogo acabou! Você morreu, caiu em uma armadilha");
                 } else {
+                    System.out.println();
                     System.out.println("Aqui não tem nada");
                 }
                 this.scenario[nextPoint.getPositionX()][nextPoint.getPositionY()] = key;
