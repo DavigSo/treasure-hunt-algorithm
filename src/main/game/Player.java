@@ -9,7 +9,7 @@ import main.game.map.Point;
 import main.strategies.Strategy;
 
 public class Player {
-    public static final String CHARACTER = "W";
+    public static final String CHARACTER = "🤖";
     private Strategy strategy;
     public Player(Strategy strategy) {
         this.strategy = strategy;

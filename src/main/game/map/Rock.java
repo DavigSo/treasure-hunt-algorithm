@@ -8,7 +8,7 @@ package main.game.map;
 import java.util.List;
 
 public class Rock {
-    public static String CHARACTER = "R";
+    public static String CHARACTER = "🪨";
     private List<Point> points;
 
     Rock(List<Point> points) {

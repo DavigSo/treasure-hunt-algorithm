@@ -42,13 +42,14 @@ public class Game {
                 } else {
                     this.gameMap.moveRobot(nextPoint);
                     num_moves++;
+                    System.out.println(num_moves + " movimentos");
 
                 }
             }
             System.out.println();
             this.gameMap.print();
         }
-        System.out.println(num_moves + " movimentos");
+        System.out.println("Foram necessários |" + num_moves + "| movimentos, para finalizar.");
     }
 
 }

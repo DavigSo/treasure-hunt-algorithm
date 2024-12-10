@@ -6,7 +6,7 @@
 package main.game.map;
 
 public class Monster extends Obstacle {
-    public static String CHARACTER = "M";
+    public static String CHARACTER = "👾";
 
     public Monster(Point coordinates) {
         super(coordinates);
