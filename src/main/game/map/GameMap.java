@@ -203,7 +203,7 @@ public class GameMap {
                     System.out.println("O jogo acabou! Você morreu, caiu em uma armadilha");
                 } else {
                     System.out.println();
-                    System.out.println("Aqui não tem nada");
+                    System.out.println("Aqui não tem nada, baú vazio!!");
                 }
                 this.scenario[nextPoint.getPositionX()][nextPoint.getPositionY()] = key;
                 break;

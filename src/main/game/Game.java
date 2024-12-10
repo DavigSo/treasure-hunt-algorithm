@@ -15,8 +15,8 @@ public class Game {
     private Player player;
     public Game() {
         this.gameMap = new GameMap(8, 8);
-        //this.player = new Player(new BinaryTree(this.gameMap));
-        this.player = new Player(new Sort());
+        this.player = new Player(new BinaryTree(this.gameMap));
+        //this.player = new Player(new Sort());
     }
 
     public void run() {
