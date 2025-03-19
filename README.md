@@ -1,6 +1,4 @@
-
-
-## Nome do Projeto: **Treasure Hunt: Quest for Riches**
+**Treasure Hunt: Quest for Riches**
 
 ### Descrição
 
