@@ -1,4 +1,4 @@
-Aqui está um exemplo de README para o seu projeto, juntamente com sugestões de nome:
+
 
 ## Nome do Projeto: **Treasure Hunt: Quest for Riches**
 
